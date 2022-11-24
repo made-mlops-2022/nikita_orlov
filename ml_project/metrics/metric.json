@@ -1,0 +1,1 @@
+{"train": {"accuracy": 1.0, "f1": 1.0, "roc_auc": 1.0}, "test": {"accuracy": 0.8222, "f1": 0.814, "roc_auc": 0.8229}}
