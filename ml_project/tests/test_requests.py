@@ -21,15 +21,6 @@ DATA = {'age': [69, 69, 66, 65, 64],
 
 
 class TestHealth(TestCase):
-    # TODO разобраться, почему тест работает, если он один, а с другими не работает
-    # На каком этапе происходит FEATURES, PIPELINE != None
-
-    # def test_not_correct(self):
-    #     client = TestClient(predict_app)
-    #     response = client.get('/health')
-    #     self.assertEqual(response.status_code, 400)
-    #     self.assertEqual(response.json(), {'detail': 'Model has not been loaded!'})
-
     def test_correct(self):
         with TestClient(predict_app) as client:
             response = client.get('/health')

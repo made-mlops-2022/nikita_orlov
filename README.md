@@ -1,4 +1,5 @@
 # mlops_made
+## Training (HW1)
 ### Подготовка окружения
 Создание виртуального окружения (команды запускаются из `ml_project` директории, unix-like системах):
 ~~~
@@ -28,4 +29,30 @@ python train.py configs/log_reg_no_regularization.yaml
 ~~~
 python predict.py model_path data_path output_path
 python predict.py models/model.pkl data/test/data.csv prediction.csv
-~~~# mlops homework
+~~~
+## Deployment (HW2)
+### Поднять сервис локально:
+Команды запускаются в директории `ml_project`:
+~~~
+uvicorn app:predict_app --reload
+~~~
+### Прогнать запросы к сервису:
+`data_path` - путь до данных (csv), `num_port` - порт сервиса (обычно `8000`)
+~~~
+python make_request.py data_path num_port
+~~~
+### Cборка и запуск докер контейнера
+~~~
+docker build -t nikovtb/prediction_service .
+docker run -it -p 80:80 nikovtb/prediction_service
+~~~
+убедиться в корректности работы сервиса:
+`data_path` - путь до данных (csv), `num_port` - порт сервиса (`80`)
+~~~
+python make_request.py data_path num_port
+~~~
+### Контейнер залит в репозиторий Docker-а
+можно запускать как и локально
+~~~
+docker run -it -p 80:80 nikovtb/prediction_service
+~~~
