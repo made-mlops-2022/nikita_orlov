@@ -38,7 +38,8 @@ class TestReadData(TestCase):
                           fill_na_categorical_strategy='most_frequent')
         training_params = TrainingParams(model='LogisticRegression',
                                          model_params={
-                                             'penalty': 'none'
+                                             'penalty': 'none',
+                                             'max_iter': 1000
                                          },
                                          random_state=42)
 

@@ -1,3 +1,5 @@
+LOG_PATH = "pipeline.log"
+
 log_conf = {
     "version": 1,
     "formatters": {
@@ -12,7 +14,7 @@ log_conf = {
         "file_handler": {
             "class": "logging.FileHandler",
             "level": "DEBUG",
-            "filename": "pipeline.log",
+            "filename": LOG_PATH,
             "formatter": "complex"
         },
         "stream_handler": {

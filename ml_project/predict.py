@@ -13,11 +13,12 @@ def predict_pipeline(pipeline_path: str, data_path: str, output_path: str):
     categorical_cols = train_config.feature_params.categorical_columns
     numerical_cols = train_config.feature_params.numerical_columns
 
-    columns = categorical_cols + numerical_cols
-    for column in columns:
-        if column not in data.columns:
-            raise KeyError(f'Feature {column} does not exist in input data')
-    data = data[columns]
+    features = categorical_cols + numerical_cols
+    for feature in features:
+        if feature not in data.columns:
+            raise KeyError(f'Feature {feature} does not exist in input data')
+    if len(features) != len(data.columns):
+        data = data[features]
     predictions = pipe.predict(data)
     with open(output_path, 'w') as file:
         file.write('\n'.join([str(y) for y in predictions]))
