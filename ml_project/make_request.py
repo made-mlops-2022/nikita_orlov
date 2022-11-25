@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 import click
 
-SERVER = 'http://0.0.0.0:8000/predict'
+SERVER = 'http://127.0.0.1:8000/predict'
 
 
 @click.command()

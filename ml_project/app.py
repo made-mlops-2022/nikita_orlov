@@ -46,7 +46,7 @@ def load_pipeline(path: str):
     except FileNotFoundError:
         logger.error(f'Model path doesnt exist: {PIPELINE_PATH}')
         sys.exit(1)
-
+    logger.debug(f'load from FS')
     PIPELINE = train_obj['pipeline']
 
     train_config = train_obj['train_config']
@@ -84,18 +84,15 @@ async def root():
 
 @predict_app.get('/health')
 async def health() -> int:
-    print(PIPELINE)
-    print(FEATURES)
     if PIPELINE is not None and FEATURES is not None:
         return 200
-    # return 404
     raise HTTPException(status_code=400, detail='Model has not been loaded!')
 
 
 @predict_app.post('/predict')
 async def predict(item: DatasetType) -> ResponseType:
-    # try:
-    preds = predict_core(item)
-    # except:
-
+    try:
+        preds = predict_core(item)
+    except:
+        return ResponseType()
     return preds

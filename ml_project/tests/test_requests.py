@@ -21,6 +21,9 @@ DATA = {'age': [69, 69, 66, 65, 64],
 
 
 class TestHealth(TestCase):
+    # TODO разобраться, почему тест работает, если он один, а с другими не работает
+    # На каком этапе происходит FEATURES, PIPELINE != None
+
     # def test_not_correct(self):
     #     client = TestClient(predict_app)
     #     response = client.get('/health')
