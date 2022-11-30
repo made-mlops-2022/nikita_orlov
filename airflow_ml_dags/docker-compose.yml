@@ -3,7 +3,7 @@ version: '3.7'
 x-environment: &airflow_environment
   - AIRFLOW__CORE__EXECUTOR=LocalExecutor
   - AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS=False
-  - AIRFLOW__CORE__LOAD_EXAMPLES=True
+  - AIRFLOW__CORE__LOAD_EXAMPLES=False
   - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql://airflow:airflow@postgres:5432/airflow
   - AIRFLOW__CORE__STORE_DAG_CODE=True
   - AIRFLOW__CORE__STORE_SERIALIZED_DAGS=True
@@ -68,32 +68,52 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment: *airflow_environment
     command: scheduler
-#
-#  ml_base:
-#    build:
-#      context: images/airflow-ml-base
-#    image: airflow-ml-base
-#    restart: "no"
-#
-#  predict:
-#    build:
-#      context: images/airflow-predict
-#    image: airflow-predict
-#    restart: "no"
-#
-#  download:
-#    build:
-#      context: images/airflow-download
-#    image: airflow-download
-#    restart: "no"
-#
-#
-#  preprocess:
-#    build:
-#      context: images/airflow-preprocess
-#    image: airflow-preprocess
-#    restart: "no"
-#
+
+  base_image:
+    build:
+      context: images/base_image
+    image: base_image
+    restart: "no"
+
+  generate_data:
+    build:
+      context: images/generate_data
+    image: generate_data
+    depends_on:
+      - base_image
+    restart: "no"
+
+  prepare_data:
+    build:
+      context: images/prepare_data
+    image: prepare_data
+    depends_on:
+      - base_image
+    restart: "no"
+
+  split_data:
+    build:
+      context: images/split_data
+    image: split_data
+    depends_on:
+      - base_image
+    restart: "no"
+
+  train_model:
+    build:
+      context: images/train_model
+    image: train_model
+    depends_on:
+      - base_image
+    restart: "no"
+
+  validate_model:
+    build:
+      context: images/validate_model
+    image: validate_model
+    depends_on:
+      - base_image
+    restart: "no"
 
 volumes:
   logs:
