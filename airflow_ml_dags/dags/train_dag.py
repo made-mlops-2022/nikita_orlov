@@ -14,8 +14,8 @@ DOCKER_ARGS = dict(network_mode='bridge',
                        Mount(source=f'{PROJECT_PATH}/logs', target='/logs', type='bind')])
 
 with DAG('train_dag',
-         schedule_interval='@daily',
-         start_date=days_ago(10)) as dag:
+         schedule_interval='@weekly',
+         start_date=days_ago(50)) as dag:
     train_test_split = DockerOperator(task_id='docker_train_test_split_data',
                                       image='split_data',
                                       command='--input-dir /data/raw/{{ ds }} '

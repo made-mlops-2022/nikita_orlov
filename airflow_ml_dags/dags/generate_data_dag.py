@@ -6,9 +6,6 @@ from docker.types import Mount
 
 PROJECT_PATH = '/home/lolvista/MADE/mlops_course/mlops_made_for_org/airflow_ml_dags'
 DATASET_LEN = 200
-#
-# default_args = {'retries': 1,
-#                 'start_date': days_ago(5)}
 
 
 def _generate_data(ds):
@@ -17,7 +14,7 @@ def _generate_data(ds):
 
 with DAG('generate_data_dag',
          schedule_interval='@daily',
-         start_date=days_ago(10),
+         start_date=days_ago(50),
          ) as dag:
     start = EmptyOperator(task_id='start')
 
