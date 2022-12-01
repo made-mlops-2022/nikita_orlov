@@ -19,7 +19,7 @@ logger = logging.getLogger('file_stream')
 @click.option('--model-dir')
 @click.option('--metric-dir')
 def train(data_dir: str, config_path: str, model_dir: str, metric_dir: str):
-    logging.debug('Start training data! Input args: '
+    logger.debug('Start training data! Input args: '
                   '--data-dir: %s, '
                   '--config-path: %s, '
                   '--model-dir: %s, '

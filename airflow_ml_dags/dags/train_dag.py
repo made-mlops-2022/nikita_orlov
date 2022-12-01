@@ -1,5 +1,4 @@
 from airflow import DAG
-from airflow.operators.empty import EmptyOperator
 from airflow.utils.dates import days_ago
 from airflow.providers.docker.operators.docker import DockerOperator
 from docker.types import Mount
@@ -41,8 +40,6 @@ with DAG('train_dag',
                                          '--model-dir /data/models/{{ ds }} '
                                          '--metric-dir /data/metrics/{{ ds }}',
                                  **DOCKER_ARGS)
-
-    # validate_model = EmptyOperator(task_id='validate_model')
 
     validate_model = DockerOperator(task_id='docker_validate_model',
                                     image='validate_model',

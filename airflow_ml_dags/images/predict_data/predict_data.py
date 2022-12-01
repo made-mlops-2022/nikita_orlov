@@ -1,10 +1,11 @@
 import pickle
-import json
+import os
 import logging.config
-import pandas as pd
 import click
+import pandas as pd
 from logger import log_conf
 from utils import predict_model, evaluate_model
+
 
 logging.config.dictConfig(log_conf)
 logger = logging.getLogger('file_stream')
@@ -12,24 +13,19 @@ logger = logging.getLogger('file_stream')
 
 @click.command()
 @click.option('--data-dir')
+@click.option('--prediction-dir')
 @click.option('--transformer-dir')
 @click.option('--model-dir')
-@click.option('--metric-dir')
-def validate_model(data_dir: str,
-                   transformer_dir: str,
-                   model_dir: str,
-                   metric_dir: str):
-    logger.debug('Start validating test raw data! Input args: '
+def predict(data_dir: str, prediction_dir: str, transformer_dir: str,  model_dir: str):
+    logger.debug('Start predicting raw data! Input args: '
                   '--data-dir: %s, '
+                  '--prediction-dir: %s, '
                   '--transformer-dir: %s, '
-                  '--model-dir: %s, '
-                  '--metric-dir: %s',
-                  data_dir, transformer_dir, model_dir, metric_dir)
+                  '--model-dir: %s, ',
+                  data_dir, prediction_dir, transformer_dir, model_dir)
 
     try:
         test_data_raw = pd.read_csv(f'{data_dir}/data.csv')
-        test_target = pd.read_csv(f'{data_dir}/target.csv')
-        test_target = test_target.values[:, 0]
     except Exception as error:
         logger.error('Error loading data: %s.', data_dir)
         logger.error('Error message: %s', error)
@@ -70,25 +66,21 @@ def validate_model(data_dir: str,
                      test_data_processed.columns)
         logger.error('Error message: %s', error)
         raise Exception
+    #
+    # y_true = pd.read_csv(f'{data_dir}/target.csv').values[:, 0]
+    # score = evaluate_model(predictions, y_true)
+    # print(score)
 
-    try:
-        test_scores = evaluate_model(predictions, test_target)
-    except Exception as error:
-        logger.error('Error while evaluating test data. '
-                     'True shape: %s, predicted shape: %s',
-                     test_target.shape, predictions.shape)
-        logger.error('Error message: %s', error)
-        raise Exception
-
-    try:
-        with open(f'{metric_dir}/test_score.json', 'w') as file:
-            json.dump({'test': test_scores}, file)
-    except Exception as error:
-        logger.error('Error while saving test score. Path: %s',
-                     metric_dir)
-        logger.error('Error message: %s', error)
-        raise Exception
+    os.makedirs(prediction_dir, exist_ok=True)
+    with open(f'{prediction_dir}/predictions.csv', 'w') as file:
+        file.write('\n'.join(map(str, predictions)))
 
 
 if __name__ == '__main__':
-    validate_model()
+    # data_dir = '/home/lolvista/MADE/mlops_course/mlops_made_for_org/airflow_ml_dags/data/raw/2022-11-21'
+    # prediction_dir = '/home/lolvista/MADE/mlops_course/mlops_made_for_org/airflow_ml_dags/data/predictions/2022-11-21'
+    # transformer_dir = '/home/lolvista/MADE/mlops_course/mlops_made_for_org/airflow_ml_dags/data/transformers/2022-11-21'
+    # model_dir = '/home/lolvista/MADE/mlops_course/mlops_made_for_org/airflow_ml_dags/data/models/2022-11-21'
+    #
+    # predict(data_dir, prediction_dir, transformer_dir, model_dir)
+    predict()

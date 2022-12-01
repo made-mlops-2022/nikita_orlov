@@ -7,7 +7,7 @@ from logger import log_conf
 
 
 PATH = 'data.csv'
-DATASET_LEN = 200
+DATASET_LEN = 280
 SEP = ','
 logging.config.dictConfig(log_conf)
 logger = logging.getLogger('file_stream')
@@ -16,7 +16,7 @@ logger = logging.getLogger('file_stream')
 @click.command("generate_data")
 @click.option("--output-dir")
 def generate_data(output_dir: str):
-    logging.debug('Start generating data! Input args: '
+    logger.debug('Start generating data! Input args: '
                   '--output-dir: %s', output_dir
                   )
     df_init = pd.read_csv(PATH)

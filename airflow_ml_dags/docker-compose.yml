@@ -115,6 +115,14 @@ services:
       - base_image
     restart: "no"
 
+  predict_data:
+    build:
+      context: images/predict_data
+    image: predict_data
+    depends_on:
+      - base_image
+    restart: "no"
+
 volumes:
   logs:
 
