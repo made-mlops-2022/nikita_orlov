@@ -1,6 +1,7 @@
-import pandas as pd
-from tests.fake_data import FakeDatasetBuilder
 import pickle
+import pandas as pd
+
+from tests.fake_data import FakeDatasetBuilder
 
 
 DATA_PATH = 'data/raw/heart_cleveland_upload.csv'
