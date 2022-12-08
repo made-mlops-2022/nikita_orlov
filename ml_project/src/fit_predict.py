@@ -9,10 +9,11 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_auc_score, accuracy_score, f1_score
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+
 from src.entities import TrainingParams
 
 
-SklearnModel = Union[LogisticRegression]
+SklearnModel = Union[LogisticRegression, RandomForestClassifier]
 
 
 def train_model(data: np.ndarray, target: np.ndarray, params: TrainingParams) -> SklearnModel:
